@@ -43,15 +43,15 @@ def process(
     """
     Process the real clouds by loading the images, patchifying them,
     and saving the patches to the output directory.
-    Args:
-        filenames (List[str]): List of image filenames.
-        patch_size (Tuple[int, int]): Size of the patches (height, width).
-        crop (Tuple[int, int, int, int]): Coordinates for cropping (left, upper, right, lower).
-        output_dir (str): Directory to save the patches.
-    Returns:
-        None
     """
-    return NotImplementedError
+    index = 0
+    for file in tqdm(filenames, desc="Processing images"):
+        img = load_image(file, crop)
+        if img is None:
+            continue
+        patches = patchify(img, patch_size)
+        save_patches(patches, output_dir, starting_index=index)
+        index += len(patches)
 
 
 def main():
